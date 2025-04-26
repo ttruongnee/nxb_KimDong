@@ -1,0 +1,30 @@
+.ArrowInputTypeNumber {
+    border: 1px solid #ccc;
+    display: inline-flex;
+    margin: 10px 0;
+}
+
+.button-up,
+.button-down {
+    border: none;
+    background-color: white;
+    width: 40px;
+    cursor: pointer;
+    padding: 10px;
+    height: 34px;
+    color: black;
+}
+
+.input-soluong {
+    border: 1px solid #ccc;
+    border-top: none;
+    border-bottom: none;
+    width: 100px;
+    padding: 10px;
+    text-align: center;
+    outline: none;
+    font-size: 16px;
+    height: 34px;
+    font-weight: bold;
+    border-radius: 0;
+}

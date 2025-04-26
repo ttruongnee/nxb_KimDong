@@ -1,0 +1,233 @@
+header {
+    width: 100%;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.header-top {
+    background-color: rgb(169, 23, 29);
+    width: 100%;
+    height: 24px;
+    display: flex;
+}
+
+.scroll {
+    display: flex;
+}
+
+.welcome {
+    width: 100%;
+    margin-top: 4px;
+    color: white;
+    display: flex;
+}
+
+.contact {
+    justify-content: right;
+    display: flex;
+}
+
+.contact-item {
+    color: white;
+    line-height: 24px;
+    justify-content: right;
+    display: flex;
+}
+
+.pc-tablet-header {
+    padding: 15px 0px;
+}
+
+.input-find {
+    width: 264px;
+    height: 25px;
+    outline: none;
+    padding-left: 20px;
+    border: 1px solid #e6e6e6;
+}
+
+.button-find {
+    width: 25px;
+    height: 25px;
+    padding: 0px;
+    border: none;
+    cursor: pointer;
+    background-color: #e6e6e6;
+}
+
+.header-bottom-right {
+    display: flex;
+    justify-content: right;
+}
+
+.user,
+.dangxuat,
+.yeuthich,
+.giohang,
+.dangky,
+.dangnhap {
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.soluong {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background-color: rgb(220, 39, 45);
+    font-size: 10px;
+    color: white;
+    text-align: center;
+}
+
+.mobile-header {
+    padding: 5px 0px;
+}
+
+.mobile-logo {
+    margin-top: 15px;
+    display: flex;
+}
+
+.mobile-header-item {
+    margin-top: 30px;
+    justify-content: right;
+}
+
+.mobile-menu-navbar {
+    margin-left: 10px;
+}
+
+.nav_overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    animation: fadeIn linear 0.2s;
+    z-index: 9999;
+}
+
+.nav_mobile {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 250px;
+    max-width: 100%;
+    background: rgba(213, 28, 36, 0.9);
+    transform: translateX(100%);
+    /* đặt opacity(trong suốt) bằng 0 và sau khi trượt vào sẽ bằng 1*/
+    opacity: 0;
+    /*linear: trượt ngang*/
+    transition: transform linear 0.2s, opacity linear 0.2s;
+    z-index: 9999;
+}
+
+.nav_mobile-list {
+    font-size: 12px;
+}
+
+.nav_mobile-item {
+    text-decoration: none;
+    display: block;
+    color: white;
+    padding: 14px 22px;
+}
+
+.nav_mobile-item:hover {
+    background-color: #d51c24;
+}
+
+.nav_mobile-close {
+    font-size: 28px;
+    color: white;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    cursor: pointer;
+}
+
+.nav_mobile-find {
+    width: 85%;
+    height: 40px;
+    margin: auto;
+    margin-top: 80px;
+    background-color: white;
+}
+
+.nav_input:checked~.nav_overlay {
+    display: block;
+}
+
+.nav_input:checked~.nav_mobile {
+    transform: translateX(0%);
+    opacity: 1;
+}
+
+.ul-mobile {
+    list-style-type: none;
+    padding: 10px 10px 10px 20px;
+}
+
+.danhmuc-a li {
+    color: white;
+    padding: 7px 0px;
+    font-size: 14px;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile */
+@media (max-width: 740px) {
+    header {
+        border-bottom: none;
+    }
+
+    .soluong {
+        font-size: 10px;
+    }
+
+    .input-find {
+        width: 90%;
+        height: 40px;
+        border: none;
+        padding: 0px 10px;
+    }
+
+    .button-find {
+        width: 40px;
+        height: 40px;
+        background-color: white;
+    }
+
+    .danhmuc-a {
+        border: none;
+    }
+}
+
+/* PC nhỏ */
+@media (min-width: 1024px) and (max-width: 1239px) {
+    .header-top {
+        height: 48px;
+    }
+
+    .contact {
+        display: block;
+    }
+
+    .hide-on-pclow {
+        display: none;
+    }
+}

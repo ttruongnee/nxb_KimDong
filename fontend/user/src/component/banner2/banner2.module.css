@@ -1,0 +1,17 @@
+.banner {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://res.cloudinary.com/dz7086zgw/image/upload/v1745290555/banner_img6_xgyewb.jpg');
+    background-attachment: fixed;
+    margin-bottom: 40px;
+}
+
+
+
+.title {
+    position: relative;
+    top: 45%;
+    color: white;
+    overflow: hidden;
+
+}

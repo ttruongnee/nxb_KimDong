@@ -1,0 +1,73 @@
+/* tr: hàng, td: ô, th: ô tiêu đề */
+.tableCart {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+}
+
+.cart-product {
+    font-size: 16px;
+}
+
+.tableCart .cart-product td {
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.tableCart .cart-product td a {
+    color: black;
+    text-decoration: none;
+}
+
+.tableCart .cart-product td a:hover {
+    color: #d51c24;
+    cursor: pointer;
+}
+
+.cart-product-img {
+    width: 150px;
+    height: auto;
+}
+
+.tableCart tbody td:nth-child(2) {
+    padding-left: 15px;
+}
+
+.tableCart th:nth-child(1) {
+    width: 50%;
+    min-width: 500px;
+}
+
+.tableCart th:nth-child(2) {
+    width: 20%;
+    min-width: 200px;
+}
+
+.tableCart th:nth-child(3) {
+    width: 10%;
+    min-width: 200px;
+}
+
+.tableCart th:nth-child(4) {
+    width: 20%;
+    min-width: 200px;
+}
+
+.tamtinh {
+    font-size: 30px;
+    color: #d51c24;
+}
+
+.thanhtoan {
+    width: 100%;
+    height: 50px;
+    background-color: #e81f29;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.thanhtoan:hover {
+    background-color: #b91921;
+}

@@ -1,0 +1,85 @@
+.textbox {
+    display: block;
+    min-width: 360px;
+    height: 40px;
+    margin: 15px 0px;
+    border: 1px solid #e6e6e6;
+    padding: 8px 15px;
+    /* Để lại padding cho input */
+    outline: none;
+}
+
+.dangnhap,
+.dangky,
+.quenmatkhau {
+    min-width: 360px;
+    height: 30px;
+    margin-bottom: 0px;
+    background-color: #d51c24;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dangnhap:hover,
+.dangky:hover,
+.quenmatkhau:hover {
+    background-color: #9c141b;
+}
+
+.chucnang {
+    text-decoration: none;
+    color: #da4764;
+    margin: 8px;
+}
+
+.main-input {
+    position: relative;
+    /* Để định vị span bên trong */
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    /* Canh giữa theo chiều dọc */
+    right: 20px;
+    /* Cách lề phải 15px */
+    transform: translateY(-50%);
+    /* Điều chỉnh để canh giữa chính xác */
+    cursor: pointer;
+    z-index: 1;
+    /* Đảm bảo icon ở trên input nếu cần */
+    /* Các style cho icon (nếu cần) */
+}
+
+.icon-input {
+    /* Bạn có thể giữ lại style chung nếu cần, nhưng KHÔNG đặt pointer-events: none; ở đây */
+    width: auto;
+    /* Thay đổi để chỉ vừa đủ nội dung */
+    height: auto;
+    /* Thay đổi để chỉ vừa đủ nội dung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Canh giữa icon nếu cần */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    /* Loại bỏ padding có thể gây cản trở */
+    transition: all 0.4s;
+    /* Cho phép tương tác */
+}
+
+.hidden {
+    display: none;
+}
+
+.errorMessage {
+    color: red;
+    margin-top: 10px;
+    font-size: 0.9em;
+}

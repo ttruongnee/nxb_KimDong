@@ -1,0 +1,79 @@
+.navbar {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    position: absolute;
+    z-index: 2;
+    line-height: 25px;
+    font-size: 13px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
+}
+
+.danhmucsanpham {
+    width: 228px;
+    height: 25px;
+    background-color: #D51C24;
+    color: white;
+    cursor: pointer;
+}
+
+.danhmuc-a {
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+    border: 1px solid #e6e6e6;
+}
+
+.danhmuc-a:hover {
+    background-color: #CCC;
+    color: #D51C24;
+}
+
+.list-box {
+    display: none;
+    width: 228px;
+    background-color: white;
+    font-size: 13.5px;
+
+}
+
+.list-box-item {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    margin: 0px;
+}
+
+.danhmucsanpham:hover .list-box {
+    display: block;
+    /*thay đổi display của list-box khi hover vào danhmucsanpham*/
+    position: absolute;
+    width: 228px;
+}
+
+ul li:hover .list-box {
+    display: block;
+    position: absolute;
+}
+
+.tintucgioithieu {
+    list-style-type: none;
+    display: flex;
+    padding-left: 20px;
+    margin: 0px;
+}
+
+.tintucgioithieu-title:hover {
+    color: #d51c24;
+}
+
+.tintuc,
+.gioithieu {
+    cursor: pointer;
+}

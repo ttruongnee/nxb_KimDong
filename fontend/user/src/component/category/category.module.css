@@ -1,0 +1,36 @@
+.list-item {
+    text-align: left;
+    margin-top: 35px;
+}
+
+.phantrang {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.trang {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    margin: 5px;
+    display: block;
+    border-radius: 3px;
+    border: 1px solid #333333;
+    color: #333333;
+    background: #fff;
+    cursor: pointer;
+}
+
+.trang:hover,
+.trangchon {
+    color: #fff;
+    background: #d51c24;
+    border: 1px solid #d51c24;
+}
+
+.trangchon:hover {
+    cursor: default;
+}

@@ -1,0 +1,163 @@
+.list-product {
+    text-align: center;
+}
+
+.list-item {
+    text-align: left;
+    margin-top: 7px;
+}
+
+.product {
+    max-width: 232px;
+    height: auto;
+    padding: 10px;
+    margin: 20px auto;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #e6e5e5;
+}
+
+.product:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    color: #D51C24;
+}
+
+.product-img {
+    width: 100%;
+}
+
+.product-name {
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+.product-price {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.current-price {
+    color: #D51C24;
+}
+
+.original-price {
+    float: right;
+    color: #BEBEBE;
+}
+
+.img-title {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.xemthem {
+    text-align: right;
+    padding: 0;
+    padding-top: 10px;
+    cursor: default;
+}
+
+.xemthem span:hover {
+    color: rgb(239, 114, 114);
+    cursor: pointer;
+}
+
+
+/* responsive.module.css */
+/* Tablet */
+@media (min-width: 741px) and (max-width: 1023px) {
+    .product {
+        max-width: 200px;
+    }
+
+
+    .product-name {
+        font-size: 15px;
+    }
+
+    .product-price {
+        margin: 0px;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    .xemthem {
+        padding-top: 6px;
+    }
+
+    .list-item .col:nth-child(5) {
+        display: none;
+    }
+}
+
+/* Mobile */
+@media (max-width: 740px) {
+    .danhmuc-a {
+        text-decoration: none;
+        color: white;
+        border: none;
+    }
+
+    .danhmuc-a:hover {
+        background: rgba(213, 28, 36, 0.9);
+        color: #ccc;
+    }
+
+    .list-box-item {
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+        padding: 3px 0px 3px 20px;
+        font-size: 13px;
+    }
+
+    .list-item .col:nth-child(4),
+    .list-item .col:nth-child(5) {
+        display: none;
+    }
+
+    .product {
+        max-width: 160px;
+    }
+
+    .product-name {
+        margin: 5px;
+        font-size: 13px;
+        line-height: 14px;
+    }
+
+    .product-price {
+        margin: 0px;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+
+    .xemthem {
+        margin: 0 auto;
+        padding-top: 8px;
+        font-size: 13px;
+    }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 520px) {
+
+    .list-item {
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .list-item .col:nth-child(3),
+    .list-item .col:nth-child(4),
+    .list-item .col:nth-child(5) {
+        display: none;
+    }
+
+    .xemthem {
+        max-width: 350px;
+        margin: 0 auto;
+        padding-top: 8px;
+    }
+}
