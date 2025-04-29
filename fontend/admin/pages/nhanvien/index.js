@@ -60,6 +60,19 @@ function QuanLyNhanvien() {
         setHienThiDialog(true);
     }
 
+    function convertSDT(str) {
+        if (!str) {
+            return false;
+        }
+        for (let i = 0; i < str.length; i++) {
+            const charCode = str.charCodeAt(i);
+            if (charCode < 48 || charCode > 57) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     async function luuNhanvien() {
         if (nhanVien.tennhanvien.trim() === '' || nhanVien.sodienthoai.trim() === '' || nhanVien.email.trim() === '') {
             thongBao.current?.show({ severity: 'warn', summary: 'Cảnh báo', detail: 'Các trường thông tin không được để trống!' });
@@ -71,14 +84,19 @@ function QuanLyNhanvien() {
             return;
         }
 
-        if (!GioiTinh.includes(nhanVien.gioitinh)) {
-            thongBao.current?.show({ severity: 'warn', summary: 'Cảnh báo', detail: 'Giới tính không hợp lệ!' });
+        // if (!GioiTinh.includes(nhanVien.gioitinh)) {
+        //     thongBao.current?.show({ severity: 'warn', summary: 'Cảnh báo', detail: 'Giới tính không hợp lệ!' });
+        //     return;
+        // }
+
+
+        if (!convertSDT(nhanVien.sodienthoai)) {
+            thongBao.current?.show({ severity: 'warn', summary: 'Cảnh báo', detail: 'Số điện thoại không hợp lệ. Vui lòng chỉ nhập số!' });
             return;
         }
 
-        // Kiểm tra định dạng số điện thoại (chỉ chứa số)
-        if (!/^\d+$/.test(nhanVien.sodienthoai)) {
-            thongBao.current?.show({ severity: 'warn', summary: 'Cảnh báo', detail: 'Số điện thoại không hợp lệ. Vui lòng chỉ nhập số!' });
+        if (!nhanVien.email.includes('@') || !nhanVien.email.includes('.')) {
+            thongBao.current?.show({ severity: 'warn', summary: 'Cảnh báo', detail: 'Email không đúng định dạng!' });
             return;
         }
 
