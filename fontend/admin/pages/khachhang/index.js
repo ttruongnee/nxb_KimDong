@@ -137,7 +137,7 @@ function QuanLyKhachhang() {
     const onInputChange = (e, name) => {
         const val = e.target.value;
         if (name === 'sodienthoai' && !/^\d*$/.test(val)) {
-            return; // Không cập nhật state nếu có ký tự không phải số
+            return;
         }
         setKhachHang({ ...khachHang, [name]: val });
     }
