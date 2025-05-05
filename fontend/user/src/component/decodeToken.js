@@ -1,4 +1,3 @@
-// utils/jwtUtils.js
 export const decodeToken = (token) => {
     try {
         const base64Url = token.split('.')[1];
