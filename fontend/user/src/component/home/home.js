@@ -11,6 +11,7 @@ const Home = () => {
     const banner_home_3 = 'https://res.cloudinary.com/dz7086zgw/image/upload/v1745290550/banner_home_3_xbkdpg.jpg';
     const banner_home_4 = 'https://res.cloudinary.com/dz7086zgw/image/upload/v1745290551/banner_home_4_fcipmr.jpg';
 
+    //render
     useEffect(() => {
         updateCartCount();
     }, []);
