@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const giohangController = require("../controllers/giohang.controller");
 
-/* GET users listing. */
+
 router.get('/', giohangController.getAll);
 router.get('/:id', giohangController.getById);
 router.post('/', giohangController.insert);
