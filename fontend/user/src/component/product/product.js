@@ -6,7 +6,6 @@ import '../product/product.css';
 import '../../component/style.css';
 import '../product/responsive.css';
 import ArrowInputTypeNumber from '../ArrowInputTypeNumber';
-// import updateCartCount from '../updateCartCount'; // Không cần import trực tiếp nữa
 
 function Product() {
     const { id_truyen } = useParams();
@@ -14,7 +13,7 @@ function Product() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [theloaiName, setTheloaiName] = useState('');
-    const [soLuongTruyen, setSoLuongTruyen] = useState(1); // số lượng sản phẩm
+    const [soLuongTruyen, setSoLuongTruyen] = useState(1);
 
     const fetchTheloaiName = (matheloai) => {
         axios.get(`http://localhost:3001/theloais/${matheloai}`)
