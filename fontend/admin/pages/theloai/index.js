@@ -18,10 +18,10 @@ function QuanLyTheloai() {
     const thongBaoRef = useRef(null);
 
     useEffect(() => {
-        taiDanhSachTheLoai();
+        loadListTheLoai();
     }, []);
 
-    function taiDanhSachTheLoai() {
+    function loadListTheLoai() {
         axios.get(API_URL)
             .then(function (response) {
                 setDanhSachTheLoai(response.data || []);
@@ -56,7 +56,7 @@ function QuanLyTheloai() {
         if (danhSachTheLoai.some(function (item) { return item.id === thongTinTheLoai.id; })) {
             axios.put(API_URL + '/' + thongTinTheLoai.id, thongTinTheLoai)
                 .then(function () {
-                    taiDanhSachTheLoai();
+                    loadListTheLoai();
                     thongBaoRef.current?.show({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công!' });
                 })
                 .catch(function () {
@@ -65,7 +65,7 @@ function QuanLyTheloai() {
         } else {
             axios.post(API_URL, thongTinTheLoai)
                 .then(function () {
-                    taiDanhSachTheLoai();
+                    loadListTheLoai();
                     thongBaoRef.current?.show({ severity: 'success', summary: 'Thành công', detail: 'Thêm thành công!' });
                 })
                 .catch(function () {
@@ -83,7 +83,7 @@ function QuanLyTheloai() {
     function xoaTheLoai() {
         axios.delete(API_URL + '/' + thongTinTheLoai.id)
             .then(function () {
-                taiDanhSachTheLoai();
+                loadListTheLoai();
                 thongBaoRef.current?.show({ severity: 'success', summary: 'Thành công', detail: 'Xóa thành công!' });
             })
             .catch(function () {
