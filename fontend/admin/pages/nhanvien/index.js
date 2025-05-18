@@ -19,7 +19,7 @@ function QuanLyNhanvien() {
     const [hienThiXoa, setHienThiXoa] = useState(false);
     const [tuKhoa, setTuKhoa] = useState('');
     const thongBao = useRef(null);
-    const [danhSachTaiKhoanNV, setDanhSachTaiKhoanNV] = useState([]); // Danh sách tài khoản NV và Admin
+    const [danhSachTaiKhoanNV, setDanhSachTaiKhoanNV] = useState([]); // Danh sách tài khoản nhân viên và admin
 
     useEffect(() => {
         Promise.all([loadNhanviens(), loadTaiKhoanNhanVienAdmin()]);
