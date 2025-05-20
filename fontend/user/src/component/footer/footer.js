@@ -6,7 +6,7 @@ import '../../component/style.css';
 const Footer = () => {
     return (
         <footer>
-            <div className={`grid wide ${styles['displayflex']}`}>
+            <div className={`grid wide  ${styles['displayflex']}`}>
                 <div
                     className={`row ${styles['displayblock-mobile']} ${styles['footer-menu']}`}
                     style={{ width: "100%" }}
