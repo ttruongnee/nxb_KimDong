@@ -1,12 +1,12 @@
 const db = require("../common/db");
 const khachhang = (khachhang) => {
-this.id = khachhang.id;
-this.tenkhachhang = khachhang.tenkhachhang;
-this.gioitinh = khachhang.gioitinh;
-this.sodienthoai = khachhang.sodienthoai;
-this.email = khachhang.email;
-this.diachinhanhang = khachhang.diachinhanhang;
-this.taikhoan = khachhang.taikhoan;
+  this.id = khachhang.id;
+  this.tenkhachhang = khachhang.tenkhachhang;
+  this.gioitinh = khachhang.gioitinh;
+  this.sodienthoai = khachhang.sodienthoai;
+  this.email = khachhang.email;
+  this.diachinhanhang = khachhang.diachinhanhang;
+  this.taikhoan = khachhang.taikhoan;
 };
 khachhang.getById = (id, callback) => {
   const sqlString = "SELECT * FROM khachhang WHERE id = ? ";
