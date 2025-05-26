@@ -63,6 +63,10 @@ footer {
         text-decoration: none;
     }
 
+    .icon-mxh {
+        margin: 10px 5px;
+    }
+
     .copyrights {
         font-size: 11px;
         margin-top: 20px;

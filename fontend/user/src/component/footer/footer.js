@@ -130,7 +130,7 @@ const Footer = () => {
                     </div>
                     <div className={`col l-3 m-3 c-12 ${styles['thongtin']}`}>
                         <h3>KẾT NỐI MẠNG XÃ HỘI</h3>
-                        <div className={styles['displayflex-nomobile']}>
+                        <div className={'flex-center'}>
                             <a
                                 href="https://www.facebook.com/nxbkimdong"
                                 target="_blank"
