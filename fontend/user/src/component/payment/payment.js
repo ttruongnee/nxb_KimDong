@@ -119,6 +119,7 @@ const Payment = () => {
 
         return { donHang, chiTietDonHang };
     };
+    console.log(layThongTinDonHang());
 
     const clickDatHang = async (event) => {
         event.preventDefault();

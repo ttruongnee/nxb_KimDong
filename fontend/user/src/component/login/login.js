@@ -46,10 +46,15 @@ const Login = () => {
 
                 // Sử dụng hàm decodeToken để lấy thông tin người dùng
                 const userInfo = decodeToken(token);
+                if (userInfo && userInfo.ma_nguoi_dung) {
+                    localStorage.setItem('maKhachHang', userInfo.ma_nguoi_dung);
+                }
                 if (userInfo && userInfo.ten_nguoi_dung) {
                     localStorage.setItem('tenKhachHang', userInfo.ten_nguoi_dung);
                 }
-
+                if (userInfo && userInfo.user_id) {
+                    localStorage.setItem('user_id', userInfo.user_id);
+                }
                 navigate('/');  //chuyển trang về trang chủ
                 window.location.reload();
             } else {
