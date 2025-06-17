@@ -4,6 +4,8 @@ import '../../component/grid.css';
 import '../../component/style.css';
 import { useNavigate } from 'react-router-dom';
 import { decodeToken } from '../decodeToken';
+import axios from 'axios';
+
 
 const Login = () => {
     const [id, setId] = useState('');
@@ -55,6 +57,10 @@ const Login = () => {
                 if (userInfo && userInfo.user_id) {
                     localStorage.setItem('user_id', userInfo.user_id);
                 }
+
+                await getGioHang();
+
+
                 navigate('/');  //chuyển trang về trang chủ
                 window.location.reload();
             } else {
@@ -64,6 +70,43 @@ const Login = () => {
         } catch (error) {
             alert('Lỗi kết nối.');
             console.error('Lỗi đăng nhập:', error);
+        }
+    };
+
+    const getGioHang = async () => {
+        try {
+            const userId = localStorage.getItem('user_id');
+            const gioHang = (await axios.get(`http://localhost:3001/giohangs/${userId}`)).data[0];
+            const chiTietGioHang = (await axios.get(`http://localhost:3001/chitietgiohangs/giohang/${userId}`)).data;
+
+            console.log('check giỏ hàng', gioHang);
+            console.log('check chi tiết giỏ hàng', chiTietGioHang);
+
+
+            const gioHangMoi = {};
+
+            // Duyệt từng item trong chi tiết giỏ hàng
+            for (const item of chiTietGioHang) {
+                // Gọi API để lấy thông tin truyện tương ứng
+                const truyenRes = await axios.get(`http://localhost:3001/truyens/${item.matruyen}`);
+                const truyen = truyenRes.data;
+
+
+                gioHangMoi[item.matruyen] = {
+                    ID: item.id,
+                    AnhTruyen: truyen[0].anhtruyen,
+                    TenTruyen: truyen[0].tentruyen,
+                    GiaBanTruyen: truyen[0].giaban,
+                    SoLuongTruyen: item.soluong,
+                    TongTien: truyen[0].giaban * item.soluong
+                };
+            }
+
+            localStorage.setItem('GioHang', JSON.stringify(gioHangMoi));
+            window.dispatchEvent(new CustomEvent('cartUpdated'));
+
+        } catch (error) {
+            console.error('Lỗi lấy giỏ hàng:', error);
         }
     };
 

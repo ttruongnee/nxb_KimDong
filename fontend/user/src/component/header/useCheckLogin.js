@@ -6,7 +6,7 @@ import { useGioHang } from '../payment/useGioHang';
 const useCheckLogin = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [tenKhach, setTenKhach] = useState('');
-    const { objGioHang, arrGioHang } = useGioHang();
+    const { arrGioHang } = useGioHang();
 
     useEffect(() => {
         const storedTenKhachHang = localStorage.getItem('tenKhachHang');
@@ -19,9 +19,9 @@ const useCheckLogin = () => {
         }
     }, []);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         //thêm lưu dữ liệu giỏ hàng vào api
-        luuGioHang();
+        await luuGioHang();
 
         localStorage.removeItem('token');
         localStorage.removeItem('tenKhachHang');
@@ -38,7 +38,6 @@ const useCheckLogin = () => {
         setIsLoggedIn(true);
     };
 
-    // Hàm này để cập nhật trạng thái đăng nhập từ bên ngoài hook
     const updateLoginStatus = (newTenKhach) => {
         setTenKhach(newTenKhach);
         setIsLoggedIn(true);
@@ -67,6 +66,16 @@ const useCheckLogin = () => {
 
 
     const luuGioHang = async () => {
+        console.log('arrGioHang 1', arrGioHang);
+        console.log('giỏ hàng 1', localStorage.getItem('GioHang'));
+
+
+        await xoaGioHang();
+
+        console.log('arrGioHang 2', arrGioHang);
+        console.log('giỏ hàng 2', localStorage.getItem('GioHang'));
+
+
         const gioHang = { id: localStorage.getItem('user_id'), maKhachHang: localStorage.getItem('maKhachHang'), tongTien: funcGetTongTien() }
         const chiTietGioHang = [];
         for (let i = 0; i < arrGioHang.length; i++) {
@@ -79,7 +88,9 @@ const useCheckLogin = () => {
                 soluong: item.SoLuongTruyen
             });
         }
-        console.log(gioHang);
+        console.log('arrGioHang 3', arrGioHang);
+        console.log('giỏ hàng 3', localStorage.getItem('GioHang'));
+
 
         try {
             await axios.post('http://localhost:3001/giohangs/', gioHang);
@@ -89,11 +100,24 @@ const useCheckLogin = () => {
                 await axios.post('http://localhost:3001/chitietgiohangs/', chitiet);
                 console.log('Chi tiết giỏ hàng đã tạo:', chitiet);
             }
+            console.log('arrGioHang 4', arrGioHang);
+            console.log('giỏ hàng 4', localStorage.getItem('GioHang'));
 
             localStorage.removeItem('GioHang');
         } catch (error) {
-            console.error('Lỗi toạ giỏ hàng:', error);
+            console.error('Lỗi tạo giỏ hàng:', error);
             alert('Lỗi khi lưu giỏ hàng vào csdl. Vui lòng thử lại sau.');
+        }
+    };
+
+
+    const xoaGioHang = async () => {
+        try {
+            await axios.delete(`http://localhost:3001/giohangs/${localStorage.getItem('user_id')}`);
+
+        } catch (error) {
+            console.error('Lỗi xoá giỏ hàng:', error);
+            alert('Lỗi khi xoá giỏ hàng khỏi csdl. Vui lòng thử lại sau.');
         }
     };
 

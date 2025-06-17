@@ -1,29 +1,18 @@
-// utils.js
-
-// Hàm tính tổng tiền tất cả sản phẩm trong giỏ hàng
 export function funcGetTongTien(gioHang) {
-    // Lấy ra danh sách các sản phẩm trong giỏ hàng
     var arrGioHang = Object.values(gioHang);
     var tongtien = 0;
-    // Duyệt qua từng sản phẩm trong giỏ hàng
     for (var i = 0; i < arrGioHang.length; i++) {
         var sanPham = arrGioHang[i];
-        // Tính tiền của sản phẩm hiện tại (giá nhân số lượng) và cộng vào tổng tiền
         tongtien = tongtien + sanPham.GiaBanTruyen * sanPham.SoLuongTruyen;
     }
-    // Trả về tổng tiền
     return tongtien;
 }
 
-// Hàm tính tổng tiền sau khi đã áp dụng giảm giá
 export function funcTongTienSauGG(tongTien, phanTramGiam) {
-    // Tính số tiền được giảm
     var tienGiam = (tongTien * phanTramGiam) / 100;
-    // Trả về tổng tiền sau khi đã trừ đi số tiền giảm
     return tongTien - tienGiam;
 }
 
-// Hàm tạo một ID ngẫu nhiên
 export function taoID() {
     // Lấy thời gian hiện tại (dạng số), chuyển thành chuỗi base 36 và lấy 5 ký tự cuối
     var phan1 = Date.now().toString(36).slice(-5);
@@ -45,6 +34,6 @@ export function convertNgayThangNam(ngay) {
     var ngaySo = ngay.getDate();
     // Chuyển ngày thành chuỗi và thêm '0' vào đầu nếu cần
     var ngayTrongThang = ngaySo < 10 ? '0' + ngaySo : '' + ngaySo;
-    // Trả về chuỗi ngày tháng theo định dạng<ctrl3348>-MM-DD
+
     return nam + '-' + thang + '-' + ngayTrongThang;
 }

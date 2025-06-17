@@ -14,6 +14,13 @@ module.exports = {
     });
   },
 
+  getByIdGioHang: (req, res) => {
+    const magiohang = req.params.magiohang;
+    Chitietgiohang.getByIdGioHang(magiohang, (result) => {
+      res.send(result);
+    });
+  },
+
   insert: (req, res) => {
     const chitietgiohang = req.body;
     Chitietgiohang.insert(chitietgiohang, (result) => {

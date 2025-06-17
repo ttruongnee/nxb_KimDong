@@ -1,13 +1,23 @@
 const db = require("../common/db");
 const chitietgiohang = (chitietgiohang) => {
-this.id = chitietgiohang.id;
-this.magiohang = chitietgiohang.magiohang;
-this.matruyen = chitietgiohang.matruyen;
-this.soluong = chitietgiohang.soluong;
+  this.id = chitietgiohang.id;
+  this.magiohang = chitietgiohang.magiohang;
+  this.matruyen = chitietgiohang.matruyen;
+  this.soluong = chitietgiohang.soluong;
 };
 chitietgiohang.getById = (id, callback) => {
   const sqlString = "SELECT * FROM chitietgiohang WHERE id = ? ";
   db.query(sqlString, id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(result);
+  });
+};
+
+chitietgiohang.getByIdGioHang = (magiohang, callback) => {
+  const sqlString = "SELECT * FROM chitietgiohang WHERE magiohang = ? ";
+  db.query(sqlString, magiohang, (err, result) => {
     if (err) {
       return callback(err);
     }

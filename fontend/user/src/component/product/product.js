@@ -69,6 +69,7 @@ function Product() {
 
         // Dispatch custom event để thông báo cho Header cập nhật
         window.dispatchEvent(new CustomEvent('cartUpdated'));
+
     }
 
     if (loading) return <div>Đang tải...</div>;

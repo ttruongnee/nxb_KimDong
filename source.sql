@@ -171,8 +171,7 @@ INSERT INTO chitietgiohang (id, magiohang, matruyen, soluong) VALUES
 ('CTGH002', 'GH002', 'TR002', 1),
 ('CTGH003', 'GH003', 'TR003', 1);
 
-select * from donhang;
-select * from chitietdonhang;
+select * from giohang;
 
 DELIMITER //
 CREATE PROCEDURE sp_LoginUser (

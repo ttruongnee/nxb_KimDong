@@ -13,13 +13,11 @@ const Header = () => {
     const { data: theLoaisMobile, loading: loadingMobile, error: errorTheLoaisMobile } = useFetchData('http://localhost:3001/theloais');
     const cartCountRefPC = useRef(null);
     const cartCountRefMobile = useRef(null);
-    const { isLoggedIn, tenKhach, handleLogout, setAuthInfo } = useCheckLogin(); // Sử dụng custom hook và lấy setAuthInfo
+    const { isLoggedIn, tenKhach, handleLogout, setAuthInfo } = useCheckLogin();
 
     useEffect(() => {
-        //cập nhật lại giá trị cartcount
         updateCartCount(cartCountRefPC, cartCountRefMobile);
 
-        //kiểm tra tồn tại token và lấy tên khách hàng
         const token = localStorage.getItem('token');
         if (token) {
             const decodedToken = decodeToken(token);
@@ -28,15 +26,12 @@ const Header = () => {
             }
         }
 
-        //xử lý update giỏ hàng
         const handleCartUpdate = () => {
             updateCartCount(cartCountRefPC, cartCountRefMobile);
         };
 
-        // Lắng nghe sự kiện 'cartUpdated' để cập nhật số lượng giỏ hàng
         window.addEventListener('cartUpdated', handleCartUpdate);
 
-        // Cleanup function: loại bỏ event listener khi component unmount
         return () => {
             window.removeEventListener('cartUpdated', handleCartUpdate);
         };
