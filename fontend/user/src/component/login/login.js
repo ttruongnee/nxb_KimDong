@@ -46,8 +46,8 @@ const Login = () => {
                 localStorage.setItem('token', token);
                 alert('Đăng nhập thành công!');
 
-                // Sử dụng hàm decodeToken để lấy thông tin người dùng
                 const userInfo = decodeToken(token);
+
                 if (userInfo && userInfo.ma_nguoi_dung) {
                     localStorage.setItem('maKhachHang', userInfo.ma_nguoi_dung);
                 }
@@ -60,8 +60,7 @@ const Login = () => {
 
                 await getGioHang();
 
-
-                navigate('/');  //chuyển trang về trang chủ
+                navigate('/');  // Chuyển về trang chủ
                 window.location.reload();
             } else {
                 alert('Tài khoản hoặc mật khẩu không đúng.');
@@ -73,34 +72,27 @@ const Login = () => {
         }
     };
 
+
     const getGioHang = async () => {
         try {
             const userId = localStorage.getItem('user_id');
             const gioHang = (await axios.get(`http://localhost:3001/giohangs/${userId}`)).data[0];
             const chiTietGioHang = (await axios.get(`http://localhost:3001/chitietgiohangs/giohang/${userId}`)).data;
 
-            console.log('check giỏ hàng', gioHang);
-            console.log('check chi tiết giỏ hàng', chiTietGioHang);
-
-
             const gioHangMoi = {};
 
-            // Duyệt từng item trong chi tiết giỏ hàng
-            for (const item of chiTietGioHang) {
-                // Gọi API để lấy thông tin truyện tương ứng
+            await Promise.all(chiTietGioHang.map(async (item) => {
                 const truyenRes = await axios.get(`http://localhost:3001/truyens/${item.matruyen}`);
-                const truyen = truyenRes.data;
-
-
+                const truyen = truyenRes.data[0];
                 gioHangMoi[item.matruyen] = {
-                    ID: item.id,
-                    AnhTruyen: truyen[0].anhtruyen,
-                    TenTruyen: truyen[0].tentruyen,
-                    GiaBanTruyen: truyen[0].giaban,
+                    ID: item.matruyen,
+                    AnhTruyen: truyen.anhtruyen,
+                    TenTruyen: truyen.tentruyen,
+                    GiaBanTruyen: truyen.giaban,
                     SoLuongTruyen: item.soluong,
-                    TongTien: truyen[0].giaban * item.soluong
+                    TongTien: truyen.giaban * item.soluong
                 };
-            }
+            }));
 
             localStorage.setItem('GioHang', JSON.stringify(gioHangMoi));
             window.dispatchEvent(new CustomEvent('cartUpdated'));

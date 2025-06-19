@@ -1,12 +1,10 @@
 // src/component/header/useCheckLogin.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useGioHang } from '../payment/useGioHang';
 
 const useCheckLogin = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [tenKhach, setTenKhach] = useState('');
-    const { arrGioHang } = useGioHang();
 
     useEffect(() => {
         const storedTenKhachHang = localStorage.getItem('tenKhachHang');
@@ -52,58 +50,47 @@ const useCheckLogin = () => {
         return phan1 + phan2;
     }
 
-    function funcGetTongTien() {
-        var tongtien = 0;
-        // Duyệt qua từng sản phẩm trong giỏ hàng
-        for (var i = 0; i < arrGioHang.length; i++) {
-            var sanPham = arrGioHang[i];
-            // Tính tiền của sản phẩm hiện tại (giá nhân số lượng) và cộng vào tổng tiền
-            tongtien = tongtien + sanPham.GiaBanTruyen * sanPham.SoLuongTruyen;
-        }
-        // Trả về tổng tiền
-        return tongtien;
-    }
+    // function funcGetTongTien() {
+    //     const arrGioHang = Object.values(JSON.parse(localStorage.getItem('GioHang') || '{}'));
+    //     var tongtien = 0;
+    //     // Duyệt qua từng sản phẩm trong giỏ hàng
+    //     for (var i = 0; i < arrGioHang.length; i++) {
+    //         var sanPham = arrGioHang[i];
+    //         // Tính tiền của sản phẩm hiện tại (giá nhân số lượng) và cộng vào tổng tiền
+    //         tongtien = tongtien + sanPham.GiaBanTruyen * sanPham.SoLuongTruyen;
+    //     }
+    //     // Trả về tổng tiền
+    //     return tongtien;
+    // }
 
 
     const luuGioHang = async () => {
-        console.log('arrGioHang 1', arrGioHang);
-        console.log('giỏ hàng 1', localStorage.getItem('GioHang'));
-
-
         await xoaGioHang();
 
-        console.log('arrGioHang 2', arrGioHang);
-        console.log('giỏ hàng 2', localStorage.getItem('GioHang'));
+        const gioHangLocal = localStorage.getItem('GioHang');
+        const arrGioHang = Object.values(JSON.parse(gioHangLocal || '{}'));
+        console.log('GioHang trước khi lưu', arrGioHang);
 
 
-        const gioHang = { id: localStorage.getItem('user_id'), maKhachHang: localStorage.getItem('maKhachHang'), tongTien: funcGetTongTien() }
-        const chiTietGioHang = [];
-        for (let i = 0; i < arrGioHang.length; i++) {
-            const item = arrGioHang[i];
 
-            chiTietGioHang.push({
-                id: taoID(),
-                magiohang: localStorage.getItem('user_id'),
-                matruyen: item.ID,
-                soluong: item.SoLuongTruyen
-            });
-        }
-        console.log('arrGioHang 3', arrGioHang);
-        console.log('giỏ hàng 3', localStorage.getItem('GioHang'));
+        const gioHang = {
+            id: localStorage.getItem('user_id'),
+            maKhachHang: localStorage.getItem('maKhachHang'),
+            tongTien: arrGioHang.reduce((sum, item) => sum + item.GiaBanTruyen * item.SoLuongTruyen, 0),
+        };
 
+        const chiTietGioHang = arrGioHang.map(item => ({
+            id: taoID(),
+            magiohang: localStorage.getItem('user_id'),
+            matruyen: item.ID,
+            soluong: item.SoLuongTruyen
+        }));
 
         try {
             await axios.post('http://localhost:3001/giohangs/', gioHang);
-
-            for (let i = 0; i < chiTietGioHang.length; i++) {
-                const chitiet = chiTietGioHang[i];
+            for (const chitiet of chiTietGioHang) {
                 await axios.post('http://localhost:3001/chitietgiohangs/', chitiet);
-                console.log('Chi tiết giỏ hàng đã tạo:', chitiet);
             }
-            console.log('arrGioHang 4', arrGioHang);
-            console.log('giỏ hàng 4', localStorage.getItem('GioHang'));
-
-            localStorage.removeItem('GioHang');
         } catch (error) {
             console.error('Lỗi tạo giỏ hàng:', error);
             alert('Lỗi khi lưu giỏ hàng vào csdl. Vui lòng thử lại sau.');
