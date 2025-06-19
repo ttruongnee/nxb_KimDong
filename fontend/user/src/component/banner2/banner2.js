@@ -9,6 +9,8 @@ const Banner2 = () => {
     const { id_theloai, id_quangcao } = useParams();
     const [tenDanhMuc, setTenDanhMuc] = useState("");
     const location = useLocation();
+    const { tentruyen } = useParams();
+
 
     useEffect(() => {
         const layTenDanhMuc = async () => {
@@ -27,6 +29,10 @@ const Banner2 = () => {
             // Trường hợp nếu là trang thanh toán
             else if (location.pathname === "/payment") {
                 tenHienThi = "Thanh toán";
+            }
+            // Trường hợp nếu là trang tìm kiếm
+            else if (tentruyen) {
+                tenHienThi = tentruyen;
             }
             // Trường hợp nếu là trang thể loại
             else if (id_theloai) {

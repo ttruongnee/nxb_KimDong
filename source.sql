@@ -216,3 +216,12 @@ select * from taikhoan;
 select * from nhanvien;
 select * from khachhang;
 
+select *
+from truyen tr
+left join theloai tl on tr.matheloai = tl.id
+left join quangcao qc on tr.maquangcao = qc.id
+where 
+    tr.tentruyen LIKE '%keyword%'
+    OR tl.tentheloai LIKE '%keyword%'
+    OR qc.tenquangcao LIKE '%keyword%'
+

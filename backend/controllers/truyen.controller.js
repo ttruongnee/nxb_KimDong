@@ -14,6 +14,13 @@ module.exports = {
     });
   },
 
+  getByName: (req, res) => {
+    const name = req.params.tentruyen;
+    Truyen.getByName(name, (result) => {
+      res.send(result);
+    });
+  },
+
   insert: (req, res) => {
     const truyen = req.body;
     Truyen.insert(truyen, (result) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styles from './home/home.module.css';
 import categoryStyles from './category/category.module.css';
-import CheckScreenSize from './checkScreenSize';
+import CheckScreenSize from './useCheckScreenSize';
 import { editTenTruyen } from "./editTenTruyen";
 
 const SO_TRUYEN_MOI_TRANG = 10;

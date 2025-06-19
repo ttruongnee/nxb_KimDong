@@ -15,6 +15,7 @@ import Banner2 from './component/banner2/banner2';
 import Ads from './component/ads/ads';
 import Login from './component/login/login';
 import Payment from './component/payment/payment';
+import Search from './component/search/search';
 
 
 function App() {
@@ -52,6 +53,18 @@ function App() {
             <Navbar />
             <Banner2 />
             <Ads />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="/timkiem/:tentruyen"
+        element={
+          <>
+            <Header />
+            <Navbar />
+            <Banner2 />
+            <Search />
             <Footer />
           </>
         }

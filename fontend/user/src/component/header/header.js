@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import styles from './header.module.css';
 import '../../component/grid.css';
 import '../../component/style.css';
@@ -13,6 +14,8 @@ const Header = () => {
     const { data: theLoaisMobile, loading: loadingMobile, error: errorTheLoaisMobile } = useFetchData('http://localhost:3001/theloais');
     const cartCountRefPC = useRef(null);
     const cartCountRefMobile = useRef(null);
+    const navigate = useNavigate();
+    const inputRef = useRef(null);
     const { isLoggedIn, tenKhach, handleLogout, setAuthInfo } = useCheckLogin();
 
     useEffect(() => {
@@ -88,14 +91,30 @@ const Header = () => {
                 <div className="pc-tablet-header hide-on-mobile">
                     <div className="grid wide">
                         <div className="row flex-center">
-                            <form id="header-find" className={`col l-4 m-4 c-0 displayflex-nomobile`}>
+                            <form id="header-find" className={`col l-4 m-4 c-0 displayflex-nomobile`}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const keyword = inputRef.current?.value.trim();
+                                    if (keyword) {
+                                        navigate(`/timkiem/${encodeURIComponent(keyword)}`);
+                                    }
+                                }}>
                                 <input
+                                    ref={inputRef}
                                     type="text"
                                     placeholder="Tìm kiếm..."
                                     className={styles['input-find']}
-                                    required=""
                                 />
-                                <button type="submit" className={styles['button-find']}>
+                                <button
+                                    type="button"
+                                    className={styles['button-find']}
+                                    onClick={() => {
+                                        const keyword = inputRef.current?.value.trim();
+                                        if (keyword) {
+                                            navigate(`/timkiem/${encodeURIComponent(keyword)}`);
+                                        }
+                                    }}
+                                >
                                     <i className="fas fa-search icon-white" style={{ color: "#d51e24" }} />
                                 </button>
                             </form>

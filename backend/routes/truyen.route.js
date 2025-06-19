@@ -6,6 +6,7 @@ const xacthuc = require('../middleware/auth');
 /* GET users listing. */
 router.get('/', truyenController.getAll);
 router.get('/:id', truyenController.getById);
+router.get('/timkiem/:tentruyen', truyenController.getByName);
 router.post('/', truyenController.insert);
 router.put('/:id', truyenController.update);
 router.delete('/:id', truyenController.delete);

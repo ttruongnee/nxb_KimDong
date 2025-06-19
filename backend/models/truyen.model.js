@@ -25,6 +25,26 @@ truyen.getById = (id, callback) => {
   });
 };
 
+truyen.getByName = (name, callback) => {
+  // const sqlString = `select * from truyen where tentruyen like '%${name}%'`;
+  const sqlString = `
+      select *
+      from truyen tr
+      left join theloai tl on tr.matheloai = tl.id
+      left join quangcao qc on tr.maquangcao = qc.id
+      where 
+          tr.tentruyen LIKE '%${name}%'
+          OR tl.tentheloai LIKE '%${name}%'
+          OR qc.tenquangcao LIKE '%${name}%'`;
+  db.query(sqlString, name, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(result);
+  });
+};
+
+
 truyen.getAll = (callback) => {
   const sqlString = "SELECT * FROM truyen ";
   db.query(sqlString, (err, result) => {
