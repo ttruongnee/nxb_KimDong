@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import useFetchData from './useFetchData';
 import styles from './home/home.module.css';
 import categoryStyles from './category/category.module.css';
 import CheckScreenSize from './useCheckScreenSize';
@@ -8,71 +8,59 @@ import { editTenTruyen } from "./editTenTruyen";
 const SO_TRUYEN_MOI_TRANG = 10;
 
 const TruyenTheoQuangCao = ({ maquangcao, soluong = 5, on_xemthem = true, on_phantrang = false }) => {
-    const [danhSachTruyen, setDanhSachTruyen] = useState([]);
+    const [listTruyenTheoQC, setListTruyenTheoQC] = useState([]);
     const [tenQuangCao, setTenQuangCao] = useState("");
     const [trangHienTai, setTrangHienTai] = useState(1);
     const mobileRefs = useRef([]);
 
+    const { data: listAllTruyen } = useFetchData("http://localhost:3001/truyens");
+    const { data: listQuangCao } = useFetchData("http://localhost:3001/quangcaos");
+
     CheckScreenSize(mobileRefs);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [responseTruyens, responseQuangCaos] = await Promise.all([
-                    axios.get("http://localhost:3001/truyens"),
-                    axios.get("http://localhost:3001/quangcaos")
-                ]);
+        if (!listAllTruyen || !listQuangCao) return;
 
-                const tatCaTruyen = responseTruyens.data;
-                const truyenTheoQuangCao = tatCaTruyen.filter(function (truyen) {
-                    return truyen.maquangcao === maquangcao;
-                });
-                setDanhSachTruyen(truyenTheoQuangCao);
+        // Lọc danh sách truyện theo quảng cáo
+        setListTruyenTheoQC(listAllTruyen.filter(truyen => truyen.maquangcao === maquangcao));
 
-                const tatCaQuangCao = responseQuangCaos.data;
-                const quangCaoTimThay = tatCaQuangCao.find(function (quangcao) {
-                    return String(quangcao.id).trim() === String(maquangcao).trim();
-                });
-                if (quangCaoTimThay) {
-                    setTenQuangCao(quangCaoTimThay.tenquangcao);
-                }
-            } catch (error) {
-                console.error("Lỗi khi tải dữ liệu:", error);
+        // Tìm tên quảng cáo tương ứng
+        for (let i = 0; i < listQuangCao.length; i++) {
+            const qc = listQuangCao[i];
+            const idQC = String(qc.id).trim();
+            const idQCtruyenvao = String(maquangcao).trim();
+
+            if (idQC === idQCtruyenvao) {
+                setTenQuangCao(qc.tenquangcao);
+                break;
             }
-        };
+        }
+    }, [listAllTruyen, listQuangCao, maquangcao]);
 
-        fetchData();
-    }, [maquangcao]);
-
-    const tongSoTruyen = danhSachTruyen.length;
+    const tongSoTruyen = listTruyenTheoQC.length;
     const soTrang = Math.ceil(tongSoTruyen / SO_TRUYEN_MOI_TRANG);
 
-    let indexBatDau = 0;
+    let viTriBatDau = 0;
+    let viTriKetThuc = soluong;
     if (on_phantrang) {
-        indexBatDau = (trangHienTai - 1) * SO_TRUYEN_MOI_TRANG;
-    }
-
-    let indexKetThuc = soluong;
-    if (on_phantrang) {
-        indexKetThuc = Math.min(indexBatDau + SO_TRUYEN_MOI_TRANG, tongSoTruyen);
+        viTriBatDau = (trangHienTai - 1) * SO_TRUYEN_MOI_TRANG;
+        viTriKetThuc = Math.min(viTriBatDau + SO_TRUYEN_MOI_TRANG, tongSoTruyen);
     } else {
-        indexKetThuc = Math.min(soluong, tongSoTruyen);
+        viTriKetThuc = Math.min(soluong, tongSoTruyen);
     }
 
-    const truyenHienThi = danhSachTruyen.slice(indexBatDau, indexKetThuc);
+    const truyenHienThi = listTruyenTheoQC.slice(viTriBatDau, viTriKetThuc);
 
     const chuyenTrang = (soTrangMoi) => {
         setTrangHienTai(soTrangMoi);
     };
 
     const hienThiSoTrang = () => {
-        if (!on_phantrang || soTrang <= 1) {
-            return null;
-        }
+        if (!on_phantrang || soTrang <= 1) return null;
 
-        const cacSoTrang = [];
+        const dsSoTrang = [];
         for (let i = 1; i <= soTrang; i++) {
-            cacSoTrang.push(
+            dsSoTrang.push(
                 <div
                     key={i}
                     className={`${categoryStyles.trang} ${trangHienTai === i ? categoryStyles.trangchon : ''}`}
@@ -82,12 +70,10 @@ const TruyenTheoQuangCao = ({ maquangcao, soluong = 5, on_xemthem = true, on_pha
                 </div>
             );
         }
-        return cacSoTrang;
+        return dsSoTrang;
     };
 
-    if (tongSoTruyen === 0) {
-        return null;
-    }
+    if (tongSoTruyen === 0) return null;
 
     return (
         <div className={`grid wide ${styles['list-product']}`}>
@@ -107,13 +93,18 @@ const TruyenTheoQuangCao = ({ maquangcao, soluong = 5, on_xemthem = true, on_pha
                                 <h4 className={styles['product-name']}>{editTenTruyen(truyen.tentruyen)}</h4>
                                 <div className={styles['product-price']}>
                                     <span className={styles['current-price']}><b>{Number(truyen.giaban).toLocaleString()}₫</b></span>
-                                    {truyen.giagoc && <span className={styles['original-price']}><s><b>{Number(truyen.giagoc).toLocaleString()}₫</b></s></span>}
+                                    {truyen.giagoc && (
+                                        <span className={styles['original-price']}>
+                                            <s><b>{Number(truyen.giagoc).toLocaleString()}₫</b></s>
+                                        </span>
+                                    )}
                                 </div>
                             </a>
                         </div>
                     </div>
                 ))}
             </div>
+
             {on_xemthem && (
                 <div className="row">
                     <a className={`col l-12 m-12 c-12 a-red ${styles['xemthem']}`} href={`/quangcao/${maquangcao}`}>
@@ -121,6 +112,7 @@ const TruyenTheoQuangCao = ({ maquangcao, soluong = 5, on_xemthem = true, on_pha
                     </a>
                 </div>
             )}
+
             {on_phantrang && soTrang > 1 && (
                 <div className={categoryStyles.phantrang}>
                     {hienThiSoTrang()}
@@ -131,3 +123,6 @@ const TruyenTheoQuangCao = ({ maquangcao, soluong = 5, on_xemthem = true, on_pha
 };
 
 export default TruyenTheoQuangCao;
+
+
+//done

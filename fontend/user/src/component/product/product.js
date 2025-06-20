@@ -1,47 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import '../../component/grid.css';
 import '../product/product.css';
 import '../../component/style.css';
 import '../product/responsive.css';
 import ArrowInputTypeNumber from '../ArrowInputTypeNumber';
+import useFetchData from '../useFetchData';
 
 function Product() {
     const { id_truyen } = useParams();
-    const [truyen, setTruyen] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [theloaiName, setTheloaiName] = useState('');
     const [soLuongTruyen, setSoLuongTruyen] = useState(1);
 
-    const fetchTheloaiName = (matheloai) => {
-        axios.get(`http://localhost:3001/theloais/${matheloai}`)
-            .then(response => {
-                setTheloaiName(response.data[0].tentheloai);
-            })
-            .catch(() => {
-                setTheloaiName('Chưa có tên thể loại');
-            });
-    };
-
-    useEffect(() => {
-        // Không gọi updateCartCount() trực tiếp ở đây nữa
-        // updateCartCount();
-
-        axios.get(`http://localhost:3001/truyens/${id_truyen}`)
-            .then(response => {
-                setTruyen(response.data);
-                setLoading(false);
-
-                const matheloai = response.data[0].matheloai;
-                fetchTheloaiName(matheloai);
-            })
-            .catch(() => {
-                setError('Không tồn tại truyện này');
-                setLoading(false);
-            });
-    }, [id_truyen]);
+    const { data: truyen } = useFetchData(`http://localhost:3001/truyens/${id_truyen}`);
+    const matheloai = truyen?.[0]?.matheloai;
+    const { data: theloaiData } = useFetchData(matheloai ? `http://localhost:3001/theloais/${matheloai}` : null);
+    const theloaiName = theloaiData?.[0]?.tentheloai || 'Chưa có tên thể loại';
 
     function handleThemVaoGio() {
         let GioHang = JSON.parse(localStorage.getItem('GioHang')) || {};
@@ -69,11 +42,8 @@ function Product() {
 
         // Dispatch custom event để thông báo cho Header cập nhật
         window.dispatchEvent(new CustomEvent('cartUpdated'));
-
     }
 
-    if (loading) return <div>Đang tải...</div>;
-    if (error) return <h1 className="flex-center" style={{ margin: '50px' }}>{error}</h1>;
     if (!truyen) return <div>Không tìm thấy truyện</div>;
 
     return (
@@ -148,3 +118,5 @@ function Product() {
 }
 
 export default Product;
+
+//done

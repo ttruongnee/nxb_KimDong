@@ -1,15 +1,14 @@
-// src/component/header/useCheckLogin.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useCheckLogin = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [tenKhach, setTenKhach] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);  //trạng thái đang đăng nhập hay không
+    const [tenKhach, setTenKhach] = useState('');  //tên khách hiển thị trên header
 
     useEffect(() => {
-        const storedTenKhachHang = localStorage.getItem('tenKhachHang');
-        if (storedTenKhachHang) {
-            setTenKhach(storedTenKhachHang);
+        const tenKhachHang = localStorage.getItem('tenKhachHang');
+        if (tenKhachHang) {  //nếu có tên khách trong local -> đã đăng nhập
+            setTenKhach(tenKhachHang);
             setIsLoggedIn(true);
         } else {
             setIsLoggedIn(false);
@@ -17,29 +16,30 @@ const useCheckLogin = () => {
         }
     }, []);
 
+
     const handleLogout = async () => {
-        //thêm lưu dữ liệu giỏ hàng vào api
+        //lưu dữ liệu giỏ hàng của khách hàng vào csdl
         await luuGioHang();
 
+        //xoá thông tin lưu trên local
         localStorage.removeItem('token');
         localStorage.removeItem('tenKhachHang');
         localStorage.removeItem('maKhachHang');
         localStorage.removeItem('user_id');
         localStorage.removeItem('GioHang');
+
+        //gán về trạng thái chưa đăng nhập
         setIsLoggedIn(false);
         setTenKhach('');
 
     };
 
+    //gán thông tin khi đã đăng nhập (dùng trong header)
     const setAuthInfo = (tenKhachHang) => {
         setTenKhach(tenKhachHang);
         setIsLoggedIn(true);
     };
 
-    const updateLoginStatus = (newTenKhach) => {
-        setTenKhach(newTenKhach);
-        setIsLoggedIn(true);
-    };
 
     function taoID() {
         // Lấy thời gian hiện tại (dạng số), chuyển thành chuỗi base 36 và lấy 5 ký tự cuối
@@ -50,33 +50,28 @@ const useCheckLogin = () => {
         return phan1 + phan2;
     }
 
-    // function funcGetTongTien() {
-    //     const arrGioHang = Object.values(JSON.parse(localStorage.getItem('GioHang') || '{}'));
-    //     var tongtien = 0;
-    //     // Duyệt qua từng sản phẩm trong giỏ hàng
-    //     for (var i = 0; i < arrGioHang.length; i++) {
-    //         var sanPham = arrGioHang[i];
-    //         // Tính tiền của sản phẩm hiện tại (giá nhân số lượng) và cộng vào tổng tiền
-    //         tongtien = tongtien + sanPham.GiaBanTruyen * sanPham.SoLuongTruyen;
-    //     }
-    //     // Trả về tổng tiền
-    //     return tongtien;
-    // }
+    function getTongTien(arrGioHang) {
+        var tongtien = 0;
+        for (var i = 0; i < arrGioHang.length; i++) {
+            var sanPham = arrGioHang[i];
+            tongtien += sanPham.GiaBanTruyen * sanPham.SoLuongTruyen;
+        }
+        return tongtien;
+    }
 
 
     const luuGioHang = async () => {
+        //xoá thông tin giỏ hàng của khách hàng này trong csdl trước khi lưu thông tin giỏ hàng mới
         await xoaGioHang();
 
         const gioHangLocal = localStorage.getItem('GioHang');
-        const arrGioHang = Object.values(JSON.parse(gioHangLocal || '{}'));
-        console.log('GioHang trước khi lưu', arrGioHang);
-
+        const arrGioHang = Object.values(JSON.parse(gioHangLocal || '{}'));  //chuyển chuỗi json thành đối tượng sau đó chuyển đối tượng thành mảng
 
 
         const gioHang = {
             id: localStorage.getItem('user_id'),
             maKhachHang: localStorage.getItem('maKhachHang'),
-            tongTien: arrGioHang.reduce((sum, item) => sum + item.GiaBanTruyen * item.SoLuongTruyen, 0),
+            tongTien: getTongTien(arrGioHang),
         };
 
         const chiTietGioHang = arrGioHang.map(item => ({
@@ -93,7 +88,7 @@ const useCheckLogin = () => {
             }
         } catch (error) {
             console.error('Lỗi tạo giỏ hàng:', error);
-            alert('Lỗi khi lưu giỏ hàng vào csdl. Vui lòng thử lại sau.');
+            alert('Hệ thống không thể lưu lại thông tin giỏ hàng của bạn, xin lỗi vì sự bất tiện!');
         }
     };
 
@@ -104,11 +99,14 @@ const useCheckLogin = () => {
 
         } catch (error) {
             console.error('Lỗi xoá giỏ hàng:', error);
-            alert('Lỗi khi xoá giỏ hàng khỏi csdl. Vui lòng thử lại sau.');
+            alert('Có lỗi khi xoá giỏ hàng khỏi csdl!');
         }
     };
 
-    return { isLoggedIn, tenKhach, handleLogout, setAuthInfo, updateLoginStatus };
+    return { isLoggedIn, tenKhach, handleLogout, setAuthInfo };
 };
 
 export default useCheckLogin;
+
+
+//done

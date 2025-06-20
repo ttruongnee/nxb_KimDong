@@ -13,8 +13,6 @@ const Ads = () => {
 
     const { id_quangcao } = useParams();
 
-
-
     return (
         <div className="grid wide list-product" style={{ marginTop: 25 }}>
             <TruyenTheoQuangCao maquangcao={id_quangcao} on_xemthem={false} on_phantrang={true} />
@@ -23,3 +21,5 @@ const Ads = () => {
 }
 
 export default Ads;
+
+//done

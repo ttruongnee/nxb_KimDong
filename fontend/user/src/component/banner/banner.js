@@ -16,8 +16,11 @@ const Banner = () => {
     const btnLeftRef = useRef(null);
     const btnRightRef = useRef(null);
     const dotsRef = useRef([]);
-    const [current, setCurrent] = useState(0);
     const autoChangeIntervalRef = useRef(null);
+
+    //ảnh hiện tại
+    const [current, setCurrent] = useState(0);
+
 
     useEffect(() => {
         const listImg = listImgRef.current;
@@ -27,8 +30,10 @@ const Banner = () => {
         if (!listImg || !imgs || !dots) return;
 
         const updateSlider = () => {
-            const width = imgs[0]?.offsetWidth || 0;
+            const width = imgs[0]?.offsetWidth || 0;  //lấy chiều rộng của ảnh 1
             listImg.style.transform = `translateX(${-width * current}px)`;
+
+            //chạy foreach toàn bộ ds dots, xoá hết active, nếu index ở vị trí ảnh hiện tại -> gán active
             dots.forEach((dot, index) => {
                 dot.classList.remove(styles.active);
                 if (index === current) {
@@ -37,35 +42,56 @@ const Banner = () => {
             });
         };
 
-        const toRight = () => {
-            setCurrent((prev) => (prev === imgs.length - 1 ? 0 : prev + 1));
-        };
 
-        const toLeft = () => {
-            setCurrent((prev) => (prev === 0 ? imgs.length - 1 : prev - 1));
-        };
+        function toRight() {
+            setCurrent(function (prev) {
+                if (prev === imgs.length - 1) {
+                    return 0;
+                } else {
+                    return prev + 1;
+                }
+            });
+        }
 
-        const dotClick = (index) => {
-            setCurrent(index);
-        };
+
+        function toLeft() {
+            setCurrent(function (prev) {
+                if (prev === 0) {
+                    return imgs.length - 1;
+                } else {
+                    return prev - 1;
+                }
+            });
+        }
+
+
+        // const dotClick = (index) => {
+        //     setCurrent(index);
+        // };
 
         updateSlider();
 
-        autoChangeIntervalRef.current = setInterval(toRight, 4000);
+        autoChangeIntervalRef.current = setInterval(function () {
+            toRight();
+        }, 4000);
 
         const btnRight = btnRightRef.current;
         const btnLeft = btnLeftRef.current;
 
         const handleRightClick = () => {
-            clearInterval(autoChangeIntervalRef.current);
-            toRight();
-            autoChangeIntervalRef.current = setInterval(toRight, 4000);
+            clearInterval(autoChangeIntervalRef.current);  //xoá interval đang chạy hiện tại
+            toRight();  //chuyển ảnh
+            autoChangeIntervalRef.current = setInterval(function () {  //gán lại interval
+                toRight();
+            }, 4000);
         };
 
         const handleLeftClick = () => {
             clearInterval(autoChangeIntervalRef.current);
             toLeft();
-            autoChangeIntervalRef.current = setInterval(toRight, 4000);
+            autoChangeIntervalRef.current = setInterval(function () {
+                toRight();
+            }, 4000);
         };
 
         if (btnRight) {
@@ -76,8 +102,11 @@ const Banner = () => {
         }
 
         dots.forEach((dot, index) => {
-            dot?.addEventListener('click', () => dotClick(index));
+            dot?.addEventListener('click', function () {
+                setCurrent(index);
+            });
         });
+
 
         return () => {
             clearInterval(autoChangeIntervalRef.current);
@@ -101,8 +130,10 @@ const Banner = () => {
         if (!listImg || !imgs || !dots) return;
 
         const updateSlider = () => {
-            const width = imgs[0]?.offsetWidth || 0;
+            const width = imgs[0]?.offsetWidth || 0;  //lấy chiều rộng của ảnh 1
             listImg.style.transform = `translateX(${-width * current}px)`;
+
+            //chạy foreach toàn bộ ds dots, xoá hết active, nếu index ở vị trí ảnh hiện tại -> gán active
             dots.forEach((dot, index) => {
                 dot.classList.remove(styles.active);
                 if (index === current) {
@@ -113,6 +144,26 @@ const Banner = () => {
 
         updateSlider();
     }, [current]);
+
+    function renderDots() {
+        const dots = [];
+        for (let i = 0; i < 5; i++) {
+            dots.push(
+                <div
+                    key={i}
+                    className={styles.dot}
+                    ref={(el) => {
+                        if (!dotsRef.current) {
+                            dotsRef.current = [];
+                        }
+                        dotsRef.current[i] = el;
+                    }}
+                />
+            );
+        }
+        return dots;
+    }
+
 
     return (
         <div className={`${styles.banner}`}>
@@ -137,19 +188,13 @@ const Banner = () => {
                 </div>
             </div>
             <div className={styles.dots}>
-                {[...Array(5)].map((_, index) => (
-                    <div
-                        key={index}
-                        className={styles.dot}
-                        ref={(el) => {
-                            if (!dotsRef.current) dotsRef.current = [];
-                            dotsRef.current[index] = el;
-                        }}
-                    />
-                ))}
+                {renderDots()}
             </div>
         </div>
     );
 };
 
 export default Banner;
+
+
+//done

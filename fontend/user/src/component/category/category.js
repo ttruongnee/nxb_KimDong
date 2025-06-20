@@ -13,7 +13,6 @@ const Category = () => {
 
     const { id_theloai } = useParams();
 
-
     return (
         <div className="grid wide list-product" style={{ marginTop: 25 }}>
             <TruyenTheoTheLoai matheloai={id_theloai} on_xemthem={false} on_phantrang={true} />
@@ -22,3 +21,5 @@ const Category = () => {
 }
 
 export default Category;
+
+//done

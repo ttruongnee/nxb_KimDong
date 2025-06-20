@@ -20,7 +20,7 @@ function GioHang() {
         setGioHang(gioHangMoi);
         localStorage.setItem('GioHang', JSON.stringify(gioHangMoi));
         updateCartCount();
-        window.dispatchEvent(new CustomEvent('cartUpdated')); // Dispatch custom event
+        window.dispatchEvent(new CustomEvent('cartUpdated')); //phát tín hiệu sự kiện cartUpdated
     }
 
     function capNhatSoLuong(idSP, soLuong) {

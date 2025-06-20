@@ -32,7 +32,7 @@ const Banner2 = () => {
             }
             // Trường hợp nếu là trang tìm kiếm
             else if (tentruyen) {
-                tenHienThi = tentruyen;
+                tenHienThi = "Tìm kiếm";
             }
             // Trường hợp nếu là trang thể loại
             else if (id_theloai) {
@@ -50,9 +50,9 @@ const Banner2 = () => {
                     const response = await axios.get(urlApi);
                     if (response.data) {
                         if (id_theloai) {
-                            tenHienThi = response.data[0]?.tentheloai || "Thể loại"; // Tên mặc định nếu không có
+                            tenHienThi = response.data[0]?.tentheloai;
                         } else if (id_quangcao) {
-                            tenHienThi = response.data[0]?.tenquangcao || "Quảng cáo"; // Tên mặc định nếu không có
+                            tenHienThi = response.data[0]?.tenquangcao;
                         }
                     } else {
                         tenHienThi = "Không tìm thấy";
@@ -91,3 +91,5 @@ const Banner2 = () => {
 };
 
 export default Banner2;
+
+//done

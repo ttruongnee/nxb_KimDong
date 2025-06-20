@@ -32,10 +32,8 @@ const Login = () => {
     const handleLogin = async (event) => {
         event.preventDefault();
 
-        const loginEndpoint = 'http://localhost:3001/login/khachhang';
-
         try {
-            const response = await fetch(loginEndpoint, {
+            const response = await fetch('http://localhost:3001/login/khachhang', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: id.toLowerCase(), matkhau: password }),
@@ -60,7 +58,7 @@ const Login = () => {
 
                 await getGioHang();
 
-                navigate('/');  // Chuyển về trang chủ
+                navigate('/', { replace: true });  //dùng replace true để thay thế trang đăng nhập bằng trang chủ, k cho nhấn quay lại trang đăng nhập
                 window.location.reload();
             } else {
                 alert('Tài khoản hoặc mật khẩu không đúng.');

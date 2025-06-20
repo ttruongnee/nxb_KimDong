@@ -11,10 +11,10 @@ import useFetchData from '../useFetchData';
 
 const Header = () => {
     const logo = "https://res.cloudinary.com/dz7086zgw/image/upload/v1745290376/logo_eoetrx.png";
-    const { data: theLoaisMobile, loading: loadingMobile, error: errorTheLoaisMobile } = useFetchData('http://localhost:3001/theloais');
+    const { data: theLoaisMobile } = useFetchData('http://localhost:3001/theloais');  //lấy ds thể loại vào navbar của mobile
     const cartCountRefPC = useRef(null);
     const cartCountRefMobile = useRef(null);
-    const navigate = useNavigate();
+    const navigate = useNavigate();  //dùng để điều hướng sang các trang khác
     const inputRef = useRef(null);
     const { isLoggedIn, tenKhach, handleLogout, setAuthInfo } = useCheckLogin();
 
@@ -28,17 +28,22 @@ const Header = () => {
                 setAuthInfo(decodedToken.tenKhachHang);
             }
         }
-
-        const handleCartUpdate = () => {
-            updateCartCount(cartCountRefPC, cartCountRefMobile);
-        };
-
-        window.addEventListener('cartUpdated', handleCartUpdate);
+        //lắng nghe sự kiện
+        window.addEventListener('cartUpdated', updateCartCount(cartCountRefPC, cartCountRefMobile));
 
         return () => {
-            window.removeEventListener('cartUpdated', handleCartUpdate);
+            //gỡ bỏ lắng nghe sự kiện tối ưu bộ nhớ
+            window.removeEventListener('cartUpdated', updateCartCount(cartCountRefPC, cartCountRefMobile));
         };
-    }, [cartCountRefPC, cartCountRefMobile, setAuthInfo]);
+    }, []);
+
+    const handleSearch = () => {
+        const keyword = inputRef.current?.value.trim();
+        if (keyword) {
+            navigate(`/timkiem/${encodeURIComponent(keyword)}`);
+        }
+    };
+
 
     return (
         <header id="header" className={styles.header}>
@@ -92,13 +97,7 @@ const Header = () => {
                     <div className="grid wide">
                         <div className="row flex-center">
                             <form id="header-find" className={`col l-4 m-4 c-0 displayflex-nomobile`}
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    const keyword = inputRef.current?.value.trim();
-                                    if (keyword) {
-                                        navigate(`/timkiem/${encodeURIComponent(keyword)}`);
-                                    }
-                                }}>
+                                onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                                 <input
                                     ref={inputRef}
                                     type="text"
@@ -108,12 +107,7 @@ const Header = () => {
                                 <button
                                     type="button"
                                     className={styles['button-find']}
-                                    onClick={() => {
-                                        const keyword = inputRef.current?.value.trim();
-                                        if (keyword) {
-                                            navigate(`/timkiem/${encodeURIComponent(keyword)}`);
-                                        }
-                                    }}
+                                    onClick={handleSearch}
                                 >
                                     <i className="fas fa-search icon-white" style={{ color: "#d51e24" }} />
                                 </button>
@@ -267,11 +261,7 @@ const Header = () => {
                                     </div>
                                     <div className={styles['nav_mobile-list']}>
                                         <ul className={`${styles['ul-mobile']}`}>
-                                            {loadingMobile ? (
-                                                <li>Đang tải danh mục...</li>
-                                            ) : errorTheLoaisMobile ? (
-                                                <li>Lỗi khi tải danh mục: {errorTheLoaisMobile?.message || 'Đã có lỗi xảy ra.'}</li>
-                                            ) : theLoaisMobile && theLoaisMobile.length > 0 ? (
+                                            {theLoaisMobile && theLoaisMobile.length > 0 ? (
                                                 theLoaisMobile.map(theLoai => (
                                                     <Link
                                                         key={theLoai.id}
@@ -297,3 +287,6 @@ const Header = () => {
 };
 
 export default Header;
+
+
+//done
