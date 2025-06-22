@@ -11,7 +11,6 @@ import { Dropdown } from 'primereact/dropdown';
 
 const API_URL = 'http://localhost:3001/truyens';
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dz7086zgw/image/upload';
-//preset name trên Cloudinary để cấu hình tải lên ảnh
 const UPLOAD_PRESET = 'upload_nxbKimDong';
 
 const danhSachDoiTuong = [

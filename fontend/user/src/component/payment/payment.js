@@ -12,14 +12,11 @@ import { funcGetTongTien, funcTongTienSauGG, taoID, convertNgayThangNam } from '
 const Payment = () => {
     const qrpay = 'https://res.cloudinary.com/dz7086zgw/image/upload/v1745290558/qr-pay_sawmmr.jpg';
 
-    // State cho phương thức thanh toán
     const [phuongThucTT, setPhuongThucTT] = useState('Thanh toán khi nhận hàng');
-    // State cho địa chỉ cụ thể
     const [diaChiCT, setDiaChiCT] = useState('');
-    // State cho mã khách hàng đặt hàng
     const [maKHDatHang, setMaKHDatHang] = useState(null);
 
-    // Sử dụng custom hook quản lý địa chỉ
+    //xử lý địa chỉ
     const {
         dsTinh,
         dsHuyen,
@@ -35,7 +32,7 @@ const Payment = () => {
     // Sử dụng custom hook quản lý giỏ hàng với tên biến mới
     const { objGioHang, arrGioHang } = useGioHang();
 
-    // Sử dụng custom hook quản lý giảm giá với tên biến và hàm mới
+    //xử lý giảm giá với tên biến và hàm mới
     const {
         inputMGG,
         maApDungThanhCong,
@@ -60,7 +57,7 @@ const Payment = () => {
         }
     }, []);
 
-    //xử lý thay đổi phương thức thanh toán
+
     const thayDoiPhuongThucTT = (event) => {
         setPhuongThucTT(event.target.value);
     };
